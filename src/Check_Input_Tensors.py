@@ -37,7 +37,7 @@ def construct_input_tensors():
     print(f"\nReadings at/below 50 (Low Floor):  {low_count}")
     print(f"Readings at/above 400 (High Ceiling): {high_count}")
 
-    X, y = create_windows(poppy_data_df, window_size=48, lead_time=12)
+    X, y = create_windows(poppy_data_df)
 
     return X, y
 
