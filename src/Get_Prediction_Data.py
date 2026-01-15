@@ -4,6 +4,7 @@
 import pandas as pd
 import numpy as np
 from datetime import timedelta
+from Application_Parameters import INPUT_SAMPLES
 
 # This function returns information about Records of events like meals, insulin, etc. in
 # the form of a Pandas dataframe with columns time (timestamp), record_type (string) and
@@ -82,4 +83,41 @@ def get_recent_records( as_of_time : pd.Timestamp ) -> pd.DataFrame:
 
     return result_df
 
-print( "result of get_recent_records:\n", get_recent_records( pd.Timestamp.now() ) )
+
+import pandas as pd
+from pylibrelinkup import PyLibreLinkUp
+
+
+def get_glucose_data_from_api(email, password):
+    """
+    Connects to LibreLinkUp and fetches the last 12 hours of glucose data.
+    Returns a DataFrame with ['time', 'glucose'].
+    """
+    # Initialize client
+    client = PyLibreLinkUp(email=email, password=password)
+    client.authenticate()
+
+    # Find Poppy in the patient list
+    patient_list = client.get_patients()
+    if not patient_list:
+        raise Exception("No patients found. Ensure you accepted the invite in the app.")
+
+    poppy = patient_list[0]
+
+    # 'graph' method retrieves approx. the last 12 hours of history
+    measurements = client.graph(patient_identifier=poppy)
+
+    # Convert measurements to a clean DataFrame
+    data = []
+    for m in measurements:
+        data.append({
+            'time': pd.to_datetime(m.timestamp),
+            'glucose': float(m.value)
+        })
+
+    df = pd.DataFrame(data).sort_values('time')
+
+    # We only need the most recent 72 samples (6 hours) for the model
+    return df.tail(INPUT_SAMPLES).reset_index(drop=True)
+
+# ### print( "result of get_recent_records:\n", get_recent_records( pd.Timestamp.now() ) )
