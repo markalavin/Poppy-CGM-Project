@@ -3,17 +3,18 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
-from Model_Architecture import PoppyLSTM
+from Model_Architecture import PoppyLSTMModel
 from Merge_Poppy_Data import merge_poppy_data
 from Process_CGM_Data import processLibreViewCSV
 from Process_Report_Data import processLibreReportsCSV
 from Check_Input_Tensors import construct_input_tensors
 from Check_Input_Tensors import normalize_tensors
+from Application_Parameters import INPUT_SAMPLES, PREDICTION_SAMPLES, HIDDEN_SIZE, NUM_LAYERS
 
 import torch.optim as optim
 
 
-def train_model(X, y, epochs=200, batch_size=32, lr=0.001):
+def train_model(X, y, epochs=2, batch_size=32, lr=0.001):     # ### 2 => 200
     """
     Trains the PoppyLSTM model using a Learning Rate Scheduler
     and saves the best performing version of the weights.
@@ -35,7 +36,7 @@ def train_model(X, y, epochs=200, batch_size=32, lr=0.001):
 
     # 3. Model Initialization
     # input_size=7 matches your features: Glucose, Insulin, 3 Carbs, 2 Time
-    model = PoppyLSTM(input_size=7).to(device)
+    model = PoppyLSTMModel(input_size=7).to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
