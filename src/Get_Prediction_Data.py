@@ -18,6 +18,8 @@ def ask_yes_no( question : str ) -> bool:
         elif response == 'N':
             return False
 
+# This function asks "question" to solicit integer that it returns:
+
 def ask_number( question : str ) -> int:
     while True:
         print( question, "(number)" )
@@ -27,12 +29,20 @@ def ask_number( question : str ) -> int:
         except:
             pass
 
+# Construct and return a dataframe containing a single "record event":
+
 def record( time : pd.Timestamp, record_type: str, record_amount : int ) -> pd.DataFrame:
     result = pd.DataFrame( [ { 'time' : time, 'record_type' : record_type, 'record_amount' : record_amount } ] )
     return result
 
+# Carefully concatenate two dataframs "df_1" and "df_2", avoiding the warning about
+# concatenating to an empty dataframe:
 def concatenate( df_1 : pd.DataFrame, df_2 : pd.DataFrame ) -> pd.DataFrame:
     return df_2 if df_1.shape[ 0 ] == 0 else pd.concat( [ df_1, df_2 ] )
+
+# Conducts a text-based interactive dialog to solicit "record" information
+# (meals, insulin, etc.) and return as a DataFrame with columns
+# [ 'time', 'record_type', 'record_amount' ]
 
 def get_recent_records( as_of_time : pd.Timestamp ) -> pd.DataFrame:
     print("get_recent_records as_of_time", as_of_time )

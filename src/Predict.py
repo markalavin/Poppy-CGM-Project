@@ -17,8 +17,8 @@ from pylibrelinkup import PyLibreLinkUp
 
 def get_latest_context(email, password, user_inputs=None, context_samples=48):
     """
-    Connects to LibreLinkUp, fetches the latest 12h graph,
-    and prepares a normalized 48-sample tensor for the model.
+    Connects to LibreLinkUp, fetches the latest 12h graph of glucose levels,
+    and prepares a normalized 48-sample 7-feature tensor for the model.
     """
     # 1. AUTHENTICATION & FETCH
     client = PyLibreLinkUp(email=email, password=password)
@@ -65,6 +65,38 @@ def get_latest_context(email, password, user_inputs=None, context_samples=48):
 
     return context_tensor
 
+def merge_records_to_context(glucose_df, records_list):
+    """
+    glucose_df: The 48 rows of [time, glucose] from the API.
+    records_list: The list of lists from your get_recent_records().
+    """
+    # 1. Convert user records to a DataFrame
+    # Expected format: [[timestamp, type, amount], ...]
+    records_df = pd.DataFrame(records_list, columns=['time', 'type', 'amount'])
+
+    # 2. Pivot types (insulin, meal, etc.) into their own columns
+    # This fills gaps with 0.0 so the model doesn't see 'NaN'
+    pivoted = records_df.pivot_table(
+        index='time',
+        columns='type',
+        values='amount',
+        aggfunc='sum'
+    ).fillna(0.0)
+
+    # 3. Perform a 'Time-Series Merge' (merge_asof)
+    # This aligns records to the nearest preceding 5-minute CGM timestamp
+    glucose_df['time'] = pd.to_datetime(glucose_df['time'])
+    pivoted.index = pd.to_datetime(pivoted.index)
+
+    final_df = pd.merge_asof(
+        glucose_df.sort_values('time'),
+        pivoted.sort_index(),
+        on='time',
+        direction='backward',
+        tolerance=pd.Timedelta("5m")
+    ).fillna(0.0)
+
+    return final_df
 
 def run_recurrent_inference(model, context_tensor, steps=12):
     """
@@ -130,7 +162,7 @@ def display_forecast(predictions_scaled):
         time_ahead = (i + 1) * 5
         print(f"+{time_ahead} min: {mgdl:.1f} mg/dL")
 
-if __name__ == "__main__":
+def Predict():
     email = "markalavin@gmail.com"
     password = "my$Poppy$Dog1"
     context_tensor = get_latest_context(email, password, user_inputs=None, context_samples=48)
@@ -158,3 +190,6 @@ if __name__ == "__main__":
 
         time_ahead = (i + 1) * 5
         print(f"+{time_ahead} min: {mgdl:.1f} mg/dL")
+
+if __name__ == "__main__":
+    Predict()
