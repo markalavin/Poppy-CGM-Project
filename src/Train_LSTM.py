@@ -10,17 +10,19 @@ from Process_Report_Data import processLibreReportsCSV
 from Check_Input_Tensors import construct_input_tensors
 from Check_Input_Tensors import normalize_tensors
 from Application_Parameters import INPUT_SAMPLES, PREDICTION_SAMPLES, HIDDEN_SIZE, NUM_LAYERS
-
+import time
+import sys
 import torch.optim as optim
 
 
-def train_model(X, y, epochs=2, batch_size=32, lr=0.001):     # ### 2 => 200
+def train_model(X, y, epochs=200, batch_size=32, lr=0.001, device = None):
     """
     Trains the PoppyLSTM model using a Learning Rate Scheduler
     and saves the best performing version of the weights.
     """
     # 1. Hardware Setup
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Training on device: {device}")
 
     # 2. Data Preparation
@@ -44,7 +46,9 @@ def train_model(X, y, epochs=2, batch_size=32, lr=0.001):     # ### 2 => 200
     # patience=10: wait 10 epochs before cutting LR in half
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10)
     best_loss = float('inf')
-    model_path = "poppy_model_best.pth"
+    # Create a unique name like: poppy_model_20241012_1430.pth
+    timestamp = time.strftime("%Y%m%d_%H%M")
+    model_path = f"../src/poppy_model_{timestamp}.pth"
 
     print(f"Starting training for {epochs} epochs...")
 
@@ -80,14 +84,22 @@ def train_model(X, y, epochs=2, batch_size=32, lr=0.001):     # ### 2 => 200
             print(f'Epoch [{epoch + 1}/{epochs}], Loss: {avg_loss:.6f}, LR: {current_lr} {save_msg}')
 
     print(f"\nTraining Complete!")
+    print(f"Model stored in", model_path )
     print(f"Final Best Loss: {best_loss:.6f}")
-    print(f"Final best RMSE re-scaled: {math.sqrt( best_loss ) * ( 400 - 50 ) }")
+    print(f"Final best RMSE re-scaled: {math.sqrt( best_loss ) * CGM_RANGE }")
 
     # Load the best weights back into the model before returning
     model.load_state_dict(torch.load(model_path))
     return model
 
-def main():
+def Train(device_arg='cuda'):
+
+    start_ms = time.time()
+
+    # Check if the requested device is available, else fallback to CPU
+    device = torch.device(device_arg if torch.cuda.is_available() else 'cpu')
+    print(f"--- Training initiated on device: {device} ---")
+
     X, y = construct_input_tensors()
     # 0.1 Normalize the training data so most features lie in the range 0 - 1:
     X_scaled, y_scaled = normalize_tensors(X, y)
@@ -111,7 +123,18 @@ def main():
     print(f"\nGlucose Range in this window: {glucose_column.min():.4f} to {glucose_column.max():.4f}")
     print(f"Insulin Range in this window: {insulin_column.min():.4f} to {insulin_column.max():.4f}")
 
-    train_model( X_scaled, y_scaled, epochs = 200 )
+    train_model( X_scaled, y_scaled, epochs = 200, device = device )
+
+    print( f"Training took {time.time() - start_ms} seconds")
+
 
 if __name__ == "__main__":
-    main()
+    # Check if a device argument was provided (sys.argv[1])
+    # len(sys.argv) will be 2 if one argument is passed
+    if len(sys.argv) > 1:
+        device_selection = sys.argv[1].lower()
+    else:
+        # Default to 'cuda' if no argument is provided
+        device_selection = 'cuda'
+
+    Train(device_selection)
