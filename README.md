@@ -31,8 +31,19 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 <!--TOC-->
-This project is a joint effort of Mark Lavin (human) and Gemini (Google AI) and depends on the FreeStyle Libre 3 Continuous Glucose Monitor (CGM) made by Abbot Laboratories.  Its objective is to develop a system based on CGM and other data that can model and predict glucose levels in Canines.
-``
+This project was developed as part of the Nvidia CUDA programming capstone for the Johns Hopkins University/Coursera specialization.
+
+Primary Author: Mark Lavin (Human)
+
+AI Thought Partner: Gemini (Google AI)
+
+Institution: Johns Hopkins University via Coursera
+
+Software License: MIT License (or your preferred license)
+
+If you use this code or model in your own research or pet health projects, please cite it as follows:
+
+Lavin, M., & Gemini AI. (2026). Poppy-CGM-Project: Predictive Glucose Modeling for Canines using LSTM and CUDA. GitHub: markalavin/Poppy-CGM-Project.``
 ``
 # 1. Introduction
 A couple of months ago, our dog Poppy, a fifteen year old mixed breed, developed diabetes, presumably based on inability to synthesize enough Insulin to modulate blood glucose levels, so that her glucose levels were consistent higher than advised by Veteranarians.  We found that establishing a regimen of regular meals (including interventions or "minimeals") in order to stabilize Poppy's glucose levels in the healthy range of 150 mg/dL and 250 mg/dL was very difficult, and we were looking for guidance on when and how much we fed Poppy and how much insulin and exercise we give her.  In addition, I was taking a course from Coursera/Johns Hopkins University on Nvidia CUDA programming and was looking for a capstone project.  Fortunately, our Vet advised fitting Poppy with a CGM so that we could see her glucose levels over time in a smartphone app.  The CGM data are a key element in helping to control Poppy's glucose levels, and since these are readily available through a Web API, we had the basis for our project.
