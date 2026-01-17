@@ -1,3 +1,36 @@
+
+<!--TOC-->
+
+______________________________________________________________________
+
+**Table of Contents**
+
+- [1. Introduction](#1-introduction)
+- [2. Objectives of the Project](#2-objectives-of-the-project)
+  - [2.1. Model Training](#21-model-training)
+  - [2.2. Model-based Prediction](#22-model-based-prediction)
+- [3. Implementation](#3-implementation)
+  - [3.1. Modelling with LSTM](#31-modelling-with-lstm)
+    - [3.1.1. Data Input](#311-data-input)
+      - [CGM data API](#cgm-data-api)
+      - ["Record" data API](#record-data-api)
+      - [Input Tensors](#input-tensors)
+    - [3.1.2. Machine Learning](#312-machine-learning)
+  - [3.2. Prediction](#32-prediction)
+- [4. Usage](#4-usage)
+  - [4.1. Code Manufacture](#41-code-manufacture)
+  - [4.2. Training](#42-training)
+  - [4.3. Prediction](#43-prediction)
+    - [Setup](#setup)
+    - [Specifying the "Record" information](#specifying-the-record-information)
+    - [Results](#results)
+- [5. Implications for CUDA and GPU programming](#5-implications-for-cuda-and-gpu-programming)
+- [6. Future Work](#6-future-work)
+- [Appendix A:  Project Contents](#appendix-a--project-contents)
+
+______________________________________________________________________
+
+<!--TOC-->
 This project is a joint effort of Mark Lavin (human) and Gemini (Google AI) and depends on the FreeStyle Libre 3 Continuous Glucose Monitor (CGM) made by Abbot Laboratories.  Its objective is to develop a system based on CGM and other data that can model and predict glucose levels in Canines.
 ``
 ``
