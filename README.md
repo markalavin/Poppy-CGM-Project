@@ -44,21 +44,22 @@ To first order, glucose level prediction is a standard time-series problem based
   <dt><code>srt/Application_Parameters.py</code></dt>
   <dd>Constant definitions</dd>
   <dt><code>src/Check_Input_Tensors.py</code></dt>
+  Construct and validate Tensor containing all training data -- CGM and "Records"
   <dd></dd>
   <dt><code>src/Checks.py</code></dt>
-  <dd></dd>
+  <dd>Check availability of GPU.</dd>
   <dt><code>src/Create_Windows.py</code></dt>
-  <dd></dd>
+  <dd>Gather CGM and Record data for Training</dd>
   <dt><code>src/Get_Prediction_Data.py</code></dt>
-  <dd></dd>
+  <dd>Gathers CGM data from ```pylibrelinkup``` and Record data from user input and combine for Prediction.</dd>
   <dt><code>src/Logging.py</code></dt>
-  <dd></dd>
+  <dd>Saves result of Predictions in log CSV file</dd>
   <dt><code>src/Merge_Poppy_data.py</code></dt>
-  <dd></dd>
+  <dd>Combines CGM and Record data using Pandas' ```merge...asof``` capability</dd>
   <dt><code>src/Model_Architecture.py</code></dt>
   <dd></dd>
   <dt><code>src/Predict.py</code></dt>
-  <dd></dd>
+  <dd>Predict glucose data after "now" or specified time using information gathered from ```pylibrelinkup``` and user input.</dd>
   <dt><code>src/Process_CGM_Data.py</code></dt>
   <dd></dd>
   <dt><code>src/Process_Report_Data.py</code></dt>
