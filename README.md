@@ -79,8 +79,20 @@ SUCCESS! Poppy's 120-Minute Forecast (5-min intervals):
 ![](https://github.com/markalavin/Poppy-CGM-Project/blob/main/data/Poppy_Forecast_2026_01_16_20_35.png)
 
 # 5. Implications for CUDA and GPU programming
+There is no CUDA coding *per se* in this project, but like the other Higher Level Libraries we've discussed, the project relies on PyTorch, which has a dual-device implementation.  All the code, including the compute-intensive training, can be executed on a GPU (my laptop has a T1000 GPU) or on the CPU.  It's informative to see what difference this makes for the time to train the model:
+<dl>
+  <dt>CPU</dt>
+  <dd>1265.67 sec</dd>
+  <dt>GPU</dt>
+  <dd>432.08 sec</dd>
+</dl>
+or a speedup of almost 3X.  In fact, since this is a rather small model, the difference between CPU and GPU is not as pronounced as it might be because the GPU time is increased by the movement of data between CPU and GPU.
 
 # 6. Future Work
+We (Gemini and myself) plan to continue this project (hopefully to Poppy's benefit) and have a number of ideas for additional work:
+1.  Code cleanup:  We were just talking about how there are still a lot of "hidden constants" (e.g., hardwired file paths) that need to be defined in the ```Application_Parameters.py``` file.  In addition, there is a good deal of refactoring of both files and functions to make code navigation easier
+2.  Prediction Validation:  When you run a prediction, you get two hours of "future" output based on the last six hours of "past" input.  If you then wait another two hours you can see the "actuals" that correspond to the predictions.  It would be desirable to add a capability to compare predictions vs. actuals and to log the results.
+3.  Feature selection:  Currently, we represent the "Records" (meals, insulin) as point events that occur at a particular time.  In fact, as Gemini pointed out, both food and insulin have affects on Poppy's glucose that spread over time from the actual meal or injection.  As such, it may make sense to preprocess the record data, extending it in time with a kind of "impulse response function" that may better model the metabolic effects.  I believe that this extended-time effect is captured to some extent by the memory of the LSTM, but we have enough data to experiment with the idea to see how it affects output quality.  Gemini also made the suggestion to add a "CGM rate of change" feature; again, while this is captured to some extent by the recurrent nature of the LSTM, Gemini felt that an explicit "derivative" signal might improve quality.
 
 # Appendix A:  Project Contents
 <dl>
