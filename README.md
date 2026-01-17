@@ -21,7 +21,9 @@ To first order, glucose level prediction is a standard time-series problem based
 #### CGM data API
 The CGM data are first acquired from the Abbot LibreView server, downloaded as .csv files, one for each 5-minute glucose sample.  The CGM data are continuously and automatically updated by the Libre 3 app, and accessed by the Python ```pylibrelinkup``` package available through ```pip```.
 #### "Record" data API
+*In principle*, the record data (meals, insulin, etc.) could be gathered from the Libre 3 app's "Report" capability that allows a user to report these events along with measure information like "units of insulin".  For now, we rely on a data chain of handwritten notes -> .csv files -> dataframes -> tensors where it's the user's responsibility to do the data entry.  The required manual intervention is a weak link in our project and will hopefully be addressed later.
 #### Input Tensors
+The last step in the data chain, whether for training or prediction, is to merge the CGM and Record data aligned in the time axis.  These merged data are then converted to a PyTorch *tensor* that consists of one row per input sample (approximately 19,000 so far) and seven columns ```['Glucose', 'Insulin', 'Meal', 'Minimeal', 'Karo', 'Sin_T', 'Cos_T']```, where "minimeal" and "karo" indicate the amount (currently fixed) of food or karo (sugar) syrup given to Poppy according to a report.   'Sin_T' and 'Cos_T' are the sin and cosine of the time of day (in hours since midnight) that the sample was taken.  All quantities get normalized during the dadta preparation to lie in the range [0.0, 1.0].  Note that for the vast majority of samples, there is only glucose data and thus all columns except 'Glucose', 'Sin_T' and 'Cos_T' are 0s.
 ### Machine Learning
 #### Model Structure
 #### Model Training
