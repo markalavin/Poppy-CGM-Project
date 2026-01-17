@@ -65,9 +65,7 @@ To first order, glucose level prediction is a standard time-series problem based
   <dd></dd>
   <dt><code>src/Train_LSTM.py</code></dt>
   <dd></dd>
-  <dt><code>src/Model_Architecture.py</code></dt>
-  <dd></dd>
-  <dt><code>src/Model_Architecture.py</code></dt>
-  <dd></dd>
+  <dt><code>src/poppy_model_best.pth.saved</code></dt>
+  <dd>Current saved model of Poppy's glucose behavior</dd>
 </dl>
 
