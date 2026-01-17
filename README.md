@@ -33,10 +33,49 @@ Prediction uses similar data and methods to the model training:  Given a predict
 The project has been set up so that it could be viewed and even tried out by others.  There is one qualification:  At the moment, the only repository of CGM data I have access to is Poppy's.  I have set things up so that during training or prediction, you'll be accessing Poppy's data, which run from November 2025 through early January 2026.  In any case, if you run into problems trying to set up or use the project, do no hesitate to contact me via the GitHub project 
 ## 4.1. Code Manufacture
 I developed the code (with extensive help from Gemini) using the PyCharm Python IDE.  You should be able to use any Python environment such as Jupyter or even just a stand-alone interpreter.  Here are the steps to follow (this is on Windows; adapt as needed for Linux, MacOS, etc.):
-1.  Set up a directory to hold the project.
-2.  
+1.  Set up a directory ```workspace``` to hold the project and ```cd``` to that directory
+2.  ```git clone https://github.com/markalavin/Poppy-CGM-Project```; this will set up the directory ```workspace/Poppy-CGM-Project```, ```cd``` to that directory.
+3.  ```pip install pylibrelinkup```
+That's it.  Since everything is Python, there's no "build" *per se*; everything you need -- programs and data -- are already there.
 ## 4.2. Training
+*At the moment, setting up training is complicated by the fact that there are some manual steps; we would prefer to fill this section in when we've streamlined the process.*
 ## 4.3. Prediction
+### Setup
+1.  Go to the directory:  ```workspace\Poppy-CGM-Project\src\```
+2.  In a shell, issue the command:  ```python Predict.py```
+The Prediction function takes two optional variables:   ```def Predict(prediction_time=None, device_arg=None):```  *For the moment*, you can specify these by modifying the invocation of ```Predict()``` at the bottom of ```Predict.py```.
+### Specifying the "Record" information
+When you invoke Predict, it automatically downloads the CGM data from the Libre Linkup repository.  However, you have to manually enter any Record information (meals, insulin, etc.) in an interactive terminal dialog like the following:
+```
+get_recent_records as_of_time 2026-01-17 16:54:08.827920
+Any more records (meals, insulin, etc.) in six hours leading up to 2026-01-17 16:54:08.827920? (y/n)
+y
+Meal? (y/n)
+y
+How many minutes ago or HH:MM  13:25
+Any more records (meals, insulin, etc.) in six hours leading up to 2026-01-17 16:54:08.827920? (y/n)
+y
+Meal? (y/n)
+n
+insulin (y/n)
+y
+How many minutes ago or HH:MM  13:50
+How many units? (number)
+9
+Any more records (meals, insulin, etc.) in six hours leading up to 2026-01-17 16:54:08.827920? (y/n)
+n
+```
+### Results
+There are two results from Prediction:
+1.  The code prints a list of the 24 predicted CGM samples, thus:
+```
+SUCCESS! Poppy's 120-Minute Forecast (5-min intervals):
+[381.9 377.6 367.6 357.1 346.  337.3 333.1 332.2 334.  334.9 333.8 331.3
+ 326.5 319.9 315.8 310.7 308.  307.9 308.2 310.1 311.8 313.6 311.9 309.9]
+```
+
+  
+3.  The code plots the predicted two hours of predicted glucose levels along with the actual six hour context on which the predictions.  Here's an example:
 ![](https://github.com/markalavin/Poppy-CGM-Project/blob/main/data/Poppy_Forecast_2026_01_16_20_35.png)
 
 # 5. Implications for CUDA and GPU programming
