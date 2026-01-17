@@ -6,7 +6,7 @@ A couple of months ago, our dog Poppy, a fifteen year old mixed breed, developed
 # Objectives of the Project
 We had two objectives in mind:
 ## Model Training
-The first objective was to train a model that could represent the CGM data we were observing.  Rather than building an *ad hoc* application, we decided to use Machine Learning, where we would use observed data -- Poppy's glucose levels and "records" of events like meals and exercise.  That objective has been met and we have a working model of Poppy's glucose levels that is extremely accurate, with a Root Mean Squared Error less than 5 mg/dL.
+The first objective was to train a model that could represent the CGM data we were observing.  Rather than building an *ad hoc* application, we decided to use Machine Learning, where we would use observed data -- Poppy's glucose levels and "records" or "reports" of events like meals and exercise.  That objective has been met and we have a working model of Poppy's glucose levels that is extremely accurate, with a Root Mean Squared Error less than 5 mg/dL.
 
 ## Model-based Prediction
 The second objective was to use the trained model to make predictions about Poppy's glucose levels.  Specifically, we used the most recently-acquired CGM data and "records" data for the last six hours to predict a two-hour window of expected glucose levels.  That objective has been partially met in that we have fully implemented a "Prediction Loop" and the results look "plausible", with the predicted results following "reasonably" the subsequently-observed data; we have planned but not yet implemented additional programs to compare the results of the predictions with the "actuals" corresponding to the predictions.
@@ -23,11 +23,51 @@ To first order, glucose level prediction is a standard time-series problem based
 #### Model Structure
 #### Model Training
 ## Prediction
-[Label](https://github.com/markalavin/Poppy-CGM-Project/blob/main/data/Poppy_Forecast_2026_01_16_20_35.png)
 # Usage
 ## Code Manufacture
 ## Training
 ## Prediction
+![](https://github.com/markalavin/Poppy-CGM-Project/blob/main/data/Poppy_Forecast_2026_01_16_20_35.png)
 
 # Implications for CUDA and GPU programming
+
 # Future Work
+
+# Appendix A:  Project Contents
+<dl>
+  <dt><code>data/Poppy CGM.csv</code></dt>
+  <dd>Training CGM data</dd>
+  <dt><code>data/Poppy Reports.csv</code></dt>
+  <dd>Training Reports data</dd>
+  <dt><code>data/prediction_history.csv</code></dt>
+  <dd>Log of all Predictions to date</dd>
+  <dt><code>srt/Application_Parameters.py</code></dt>
+  <dd>Constant definitions</dd>
+  <dt><code>src/Check_Input_Tensors.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Checks.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Create_Windows.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Get_Prediction_Data.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Logging.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Merge_Poppy_data.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Model_Architecture.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Predict.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Process_CGM_Data.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Process_Report_Data.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Train_LSTM.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Model_Architecture.py</code></dt>
+  <dd></dd>
+  <dt><code>src/Model_Architecture.py</code></dt>
+  <dd></dd>
+</dl>
+
