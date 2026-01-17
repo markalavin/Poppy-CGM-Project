@@ -30,7 +30,9 @@ The LSTM model that predicts future glucose levels (for two hours or 24 five-min
 Prediction uses similar data and methods to the model training:  Given a prediction time (defaults to "now" but can be set earlier), the program first gathers the data for prediction:  the 72 samples (six hours) preceding the prediction time, then uses the model to predict the subsequent output of 24 samples (two hours) following the prediction time.  The Prediction function prints and plots the results and saves them away for subsequent validation:  waiting for two hours and then comparing the "actuals" of Poppy's glucose levels with the predictions; this capability will be added in the future.
 
 # 4. Usage
+The project has been set up so that it could be viewed and even tried out by others.  There is one qualification:  At the moment, the only repository of CGM data I have access to is Poppy's.  I have set things up so that during training or prediction, you'll be accessing Poppy's data, which run from November 2025 through early January 2026.  In any case, if you run into problems trying to set up or use the project, do no hesitate to contact me via the GitHub project 
 ## 4.1. Code Manufacture
+To set up the code for your own use, you will have to follow these steps.  
 ## 4.2. Training
 ## 4.3. Prediction
 ![](https://github.com/markalavin/Poppy-CGM-Project/blob/main/data/Poppy_Forecast_2026_01_16_20_35.png)
